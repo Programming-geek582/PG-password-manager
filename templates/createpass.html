@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Create password</title>
+    <link href="../static/css/dashboard.css" rel="stylesheet" />
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-primary">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-7">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header">
+                                    <h3 class="text-center font-weight-light my-4">Create Password</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form method="POST">
+                                        <div class="mb-3">
+                                            <label for="website">Website</label>
+                                            <input class="form-control" type="text" placeholder="Enter website name"
+                                                name="website" id="website">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="username">Username</label>
+                                            <input class="form-control" type="text"
+                                                placeholder="Enter your username for that website" name="username"
+                                                id="username">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <input type="password" class="form-control"
+                                                aria-describedby="inputGroupFileAddon03" name="password" id="password">
+                                            <button class="btn btn-secondary" type="button"
+                                                onclick="generateRandomPassword()">
+                                                <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                                            </button>
+                                            <button class="btn btn-secondary" onclick="showPassword()" type="button">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <div class="mt-4 mb-0">
+                                            <div class="d-grid"><button class="btn btn-primary" type="submit">Create
+                                                    password</button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script>
+        function generateRandomPassword() {
+            let passwordInput = document.getElementById('password');
+            let randomPassword = generatePassword(); // Replace this with your password generation logic
+            passwordInput.value = randomPassword;
+        }
+
+        function showPassword() {
+            let input = document.getElementById('password');
+            if (input.type === 'password') {
+                input.type = 'text';
+            } else {
+                input.type = 'password';
+            }
+        }
+
+        // Example password generation logic (replace with your own implementation)
+        function generatePassword() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+={}[]|:;"<>,.?/';
+
+            const length = 10;
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                password += characters[randomIndex];
+            }
+            return password;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Shared passwords - PG Password manager</title>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../static/css/font-awesome.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">PG</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarID"
+                aria-controls="navbarID" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse me-5" id="navbarID">
+                <div class="navbar-nav me-5">
+                    <div class="dropdown open">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="triggerId"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i> {{ user.firstname }} {{ user.lastname }}
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="triggerId">
+                            <a class="dropdown-item" href="/dashboard">Dashboard</a>
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 class="mt-5">Shared passwords</h1>
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Look up a password by website name"
+            class="form-control mb-2">
+
+        <div class="table-responsive">
+            <table class="table table-light" id="myTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Website</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Shared by</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if passwords is none and sharers is none %}
+                    <tr>
+                        <td colspan="4">No passwords found.</td>
+                    </tr>
+                    {% else %}
+                    {% for user in usernames %}
+                    {% for password in data[user] %}
+                    <tr>
+                        <td>{{ password.website }}</td>
+                        <td>{{ password.username }}</td>
+                        <td>
+                            <div class="input-group mb-3">
+                                <input type="password" class="form-control"
+                                    id="passwordField{{ data[user].index(password) }}{{ password.id }}" aria-describedby="inputGroupFileAddon03"
+                                    value="{{ decrypt(password.password) }}" disabled="true">
+                                <button class="btn btn-secondary" onclick="show('{{ data[user].index(password) }}{{ password.id }}')" type="button"
+                                    id="inputGroupFileAddon03">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </button>
+                                <button class="btn btn-secondary" onclick="copy('{{ data[user].index(password) }}{{ password.id }}')" type="button"
+                                    id="inputGroupFileAddon03" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="" data-bs-original-title="Copy" data-index="{{ data[user].index(password) }}{{ password.id }}">
+                                    <i class="fa fa-copy" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            {{ user }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../../static/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+        function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function show(index) {
+            let input = document.getElementById('passwordField' + index);
+            if (input.type == 'password') {
+                input.type = 'text';
+            } else {
+                input.type = 'password';
+            }
+        }
+
+        function copy(index) {
+            var copyText = document.getElementById("passwordField" + index);
+            var tooltipTriggerEl = document.querySelector('[data-bs-toggle="tooltip"][data-index="' + index + '"]');
+
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+
+            tooltipTriggerEl.setAttribute('title', 'Copied');
+            var tooltip = new bootstrap.Tooltip(tooltipTriggerEl);
+            tooltip.show();
+
+            setTimeout(function () {
+                tooltipTriggerEl.setAttribute('title', 'Copy');
+                tooltip.dispose();
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>
