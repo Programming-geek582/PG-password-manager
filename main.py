@@ -13,7 +13,8 @@ async def before_startup():
         modules={
             'models' : ['models']
         },
-        config='connections': {
+        config={
+            'connections': {
                           # Dict format for connection
                           'default': {
                               'engine': 'tortoise.backends.asyncpg',
@@ -26,6 +27,8 @@ async def before_startup():
                               },
                               'maxsize': 100
                           }
+            }
+        }
     )
     await Tortoise.generate_schemas()
     await general.register(app)
