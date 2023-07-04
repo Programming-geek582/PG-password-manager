@@ -1,3 +1,4 @@
 shortuuid
 quart
 tortoise-orm[asyncpg]
+cryptography
