@@ -1,3 +1,3 @@
 shortuuid
 quart
-tortoise-orm
+tortoise-orm[asyncpg]
