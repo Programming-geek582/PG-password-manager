@@ -9,7 +9,6 @@ app.secret_key = "werkzeugIsChad"
 @app.before_serving
 async def before_startup():
     await Tortoise.init(
-        db_url="postgres://pg:Qun72wh5L4lso1M6Kqa3Pq9HQM3fDh7N@dpg-cihsf8qip7vpelqibkog-a.oregon-postgres.render.com/passwordmanager_3dzy",
         modules={
             'models' : ['models']
         },
